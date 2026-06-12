@@ -399,92 +399,7 @@ function setupEventListeners() {
 
   document.getElementById("btn-reset-demo").addEventListener("click", logout);
 
-  document.getElementById("btn-view-plans").addEventListener("click", () => {
-    document.getElementById("subscription-modal").classList.remove("hidden");
-  });
 
-  document.getElementById("btn-simulate-dates").addEventListener("click", async () => {
-    try {
-      const res = await fetch(`${API_BASE}/api/test/simulate-dates`, {
-        method: "POST",
-        headers: { "Authorization": `Bearer_${state.userId}` }
-      });
-      if (res.ok) {
-        const data = await res.json();
-        alert(`Successfully simulated 5 dates! Your new date count is: ${data.count}. Next queue search will trigger the paywall.`);
-        navigateTo("page-dashboard");
-      } else {
-        alert("Failed to simulate dates.");
-      }
-    } catch (err) {
-      console.error(err);
-    }
-  });
-
-  // Subscription Plan selections
-  const plans = document.querySelectorAll(".plan-card");
-  plans.forEach(plan => {
-    plan.addEventListener("click", () => {
-      plans.forEach(p => p.classList.remove("active"));
-      plan.classList.add("active");
-      
-      const payButton = document.getElementById("btn-subscribe-pay");
-      if (plan.dataset.plan === "trial") {
-        payButton.textContent = "Start 7-Day Free Trial";
-      } else {
-        payButton.textContent = "Unlock Unlimited Dates";
-      }
-    });
-  });
-
-  // Close subscription modal
-  document.getElementById("btn-subscribe-close").addEventListener("click", () => {
-    document.getElementById("subscription-modal").classList.add("hidden");
-    resetQueueUI();
-  });
-
-  // Subscribe Payment Trigger
-  document.getElementById("btn-subscribe-pay").addEventListener("click", async () => {
-    const activeCard = document.querySelector(".plan-card.active");
-    const activePlan = activeCard ? activeCard.dataset.plan : "trial";
-    try {
-      let endpoint = `${API_BASE}/api/subscription/activate`;
-      let body = { type: activePlan };
-      
-      if (activePlan === "trial") {
-        endpoint = `${API_BASE}/api/subscription/free-trial`;
-        body = {};
-      }
-
-      const res = await fetch(endpoint, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer_${state.userId}`
-        },
-        body: JSON.stringify(body)
-      });
-      if (res.ok) {
-        if (activePlan === "trial") {
-          alert("Free Trial Started! You have unlocked 7 days of premium access without initial payment.");
-        } else {
-          alert("Payment Successful! Premium subscription activated.");
-        }
-        document.getElementById("subscription-modal").classList.add("hidden");
-        await checkProfileStatus();
-        document.getElementById("btn-join-queue").click();
-      } else {
-        if (res.status === 401) {
-          alert("Your session has expired. Redirecting to login...");
-          logout();
-        } else {
-          alert("Failed to process request. Try again.");
-        }
-      }
-    } catch (err) {
-      console.error(err);
-    }
-  });
 
   // Chat attachment button click
   document.getElementById("btn-chat-attach").addEventListener("click", () => {
@@ -521,13 +436,7 @@ async function joinQueue() {
     
     if (res.ok) {
       const data = await res.json();
-      if (data.status === "subscription_required") {
-        clearInterval(state.queueInterval);
-        state.queueInterval = null;
-        resetQueueUI();
-        document.getElementById("subscription-modal").classList.remove("hidden");
-        return;
-      }
+
       if (data.status === "matched" || data.status === "already_matched") {
         clearInterval(state.queueInterval);
         state.queueInterval = null;
@@ -785,9 +694,6 @@ function logout() {
   clearInterval(state.queueInterval);
   
   navigateTo("page-login");
-  
-  // Hide subscription modal if open
-  document.getElementById("subscription-modal").classList.add("hidden");
   
   // Reset fields
   document.getElementById("phone-input").value = "";

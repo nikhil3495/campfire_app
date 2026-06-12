@@ -1,6 +1,6 @@
 # Campfire - College Blind Dating Web Application
 
-Campfire is a premium college blind dating web application designed with modern aesthetics (soft pastel pinks, deep violet accents, and white glassmorphism). It supports location-based proximity matchmaking, security verification (Aadhaar & Student ID cards), paywalled membership levels, and real-time chat with photo attachments.
+Campfire is a premium college blind dating web application designed with modern aesthetics (soft pastel pinks, deep violet accents, and white glassmorphism). It supports location-based proximity matchmaking, security verification (Aadhaar & Student ID cards), and real-time chat with photo attachments.
 
 ---
 
@@ -12,8 +12,6 @@ Campfire is a premium college blind dating web application designed with modern 
 4. **Chat Photo Attachments**: Share photos directly in socket-based chat rooms.
 5. **Location-Based Proximity Sorting**: Automatically uses the browser Geolocation API on onboarding and uses Euclidean distance formulas to rank nearby matches first.
 6. **Security Fields**: Optional 12-digit Aadhaar card number input and Student ID Card URL verification.
-7. **Premium Subscription Paywall**: Free users are limited to 5 blind date matches. Afterwards, a paywall modal prompts them to subscribe to plans of **₹99/month** or **₹999/year** to unlock matching.
-8. **Developer Simulation Toolbar**: Direct launch buttons on the settings screen to test 5 matching logs and paywall limits instantly.
 
 ---
 
