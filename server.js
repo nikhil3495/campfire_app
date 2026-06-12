@@ -260,10 +260,13 @@ app.get('/api/blind-date/:id/messages', async (req, res) => {
 // Activate subscription (Mock payment)
 app.post('/api/subscription/activate', async (req, res) => {
   try {
+    console.log('Activate subscription request headers:', req.headers);
     const userId = parseInt(req.headers.authorization?.split('_')[1]);
+    console.log('Parsed userId:', userId);
     if (!userId) return res.status(401).json({ error: "Unauthorized" });
 
     const { type } = req.body;
+    console.log('Received subscription type:', type);
     if (!type || (type !== 'monthly' && type !== 'yearly')) {
       return res.status(400).json({ error: "Invalid subscription type" });
     }
@@ -279,7 +282,9 @@ app.post('/api/subscription/activate', async (req, res) => {
 // Activate 7-day free trial
 app.post('/api/subscription/free-trial', async (req, res) => {
   try {
+    console.log('Free trial activation request headers:', req.headers);
     const userId = parseInt(req.headers.authorization?.split('_')[1]);
+    console.log('Parsed userId:', userId);
     if (!userId) return res.status(401).json({ error: "Unauthorized" });
 
     const updatedUser = await db.activateFreeTrial(userId);
