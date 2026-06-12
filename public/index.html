@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Campfire - College Blind Dates</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="body-dot"></div>
+  <div class="app-container">
+    <div class="phone-frame">
+      <!-- Device Notch/Header -->
+      <div class="device-header">
+        <span class="time" id="device-clock">9:41</span>
+        <div class="notch"></div>
+        <div class="status-icons">
+          <i class="fa-solid fa-signal"></i>
+          <i class="fa-solid fa-wifi"></i>
+          <i class="fa-solid fa-battery-three-quarters"></i>
+        </div>
+      </div>
+
+      <!-- PAGE: SPLASH -->
+      <div id="page-splash" class="page active">
+        <div class="splash-content">
+          <div class="logo-wrapper">
+            <div class="campfire-glow"></div>
+            <i class="fa-solid fa-fire logo-icon"></i>
+          </div>
+          <h1>campfire</h1>
+          <p class="tagline">College Blind Dates. Unblur the Spark.</p>
+          <div class="spinner"></div>
+        </div>
+      </div>
+
+      <!-- PAGE: LOGIN -->
+      <div id="page-login" class="page">
+        <div class="auth-content">
+          <h2>Sign In</h2>
+          <p class="auth-subtitle">Verify your college student status</p>
+          
+          <div class="input-group">
+            <label for="phone-input">Phone Number</label>
+            <div class="phone-input-wrapper">
+              <span class="country-code">+1</span>
+              <input type="tel" id="phone-input" placeholder="(555) 000-0000" maxlength="14">
+            </div>
+          </div>
+
+          <button id="btn-send-otp" class="btn btn-primary">Send Verification Code</button>
+
+          <!-- OTP Form (Hidden initially) -->
+          <div id="otp-wrapper" class="hidden">
+            <div class="input-group">
+              <label for="otp-input">Enter 6-Digit OTP</label>
+              <input type="text" id="otp-input" placeholder="0 0 0 0 0 0" maxlength="6" class="otp-fields">
+            </div>
+            <button id="btn-verify-otp" class="btn btn-accent">Verify & Enter</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- PAGE: ONBOARDING -->
+      <div id="page-onboarding" class="page">
+        <div class="onboarding-header">
+          <h3>Create Profile</h3>
+          <span class="step-indicator">1 of 2</span>
+        </div>
+        <div class="onboarding-scroll">
+          <form id="onboarding-form">
+            <!-- Step 1: Basic Info -->
+            <div class="onboarding-step" id="step-1">
+              <div class="input-group">
+                <label>First Name</label>
+                <input type="text" id="ob-name" required placeholder="e.g. Alex">
+              </div>
+              <div class="input-group">
+                <label>Age</label>
+                <input type="number" id="ob-age" min="18" max="30" required placeholder="e.g. 20">
+              </div>
+              <div class="input-group">
+                <label>Gender</label>
+                <select id="ob-gender" required>
+                  <option value="" disabled selected>Select gender</option>
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
+                  <option value="non-binary">Non-Binary</option>
+                </select>
+              </div>
+              <div class="input-group">
+                <label>Show Me</label>
+                <select id="ob-pref" required>
+                  <option value="" disabled selected>Who do you want to meet?</option>
+                  <option value="female">Women</option>
+                  <option value="male">Men</option>
+                  <option value="everyone">Everyone</option>
+                </select>
+              </div>
+              <button type="button" id="btn-next-step" class="btn btn-primary">Next: College Info</button>
+            </div>
+
+            <!-- Step 2: College Info & Prompts -->
+            <div class="onboarding-step hidden" id="step-2">
+              <div class="input-group">
+                <label>College Name</label>
+                <input type="text" id="ob-college" required placeholder="e.g. Stanford University">
+              </div>
+              <div class="input-group">
+                <label>Major/Course</label>
+                <input type="text" id="ob-course" required placeholder="e.g. Computer Science">
+              </div>
+              <div class="input-group">
+                <label>Graduation Year</label>
+                <input type="number" id="ob-grad" min="2026" max="2032" required placeholder="e.g. 2028">
+              </div>
+              <div class="input-group">
+                <label>Aadhaar Card Number (12 Digits)</label>
+                <input type="text" id="ob-aadhaar" required placeholder="e.g. 123456789012" maxlength="12" pattern="\d{12}">
+              </div>
+              <div class="input-group">
+                <label>Student ID Card Image URL</label>
+                <input type="text" id="ob-idcard" required placeholder="e.g. /assets/student_id_placeholder.png">
+              </div>
+              <div class="input-group">
+                <label>Profile Photos (Add up to 6 URLs)</label>
+                <div class="photo-inputs-grid">
+                  <input type="text" class="ob-photo-url" placeholder="Photo 1 URL (e.g. /assets/aria.png)" required>
+                  <input type="text" class="ob-photo-url" placeholder="Photo 2 URL (Optional)">
+                  <input type="text" class="ob-photo-url" placeholder="Photo 3 URL (Optional)">
+                  <input type="text" class="ob-photo-url" placeholder="Photo 4 URL (Optional)">
+                  <input type="text" class="ob-photo-url" placeholder="Photo 5 URL (Optional)">
+                  <input type="text" class="ob-photo-url" placeholder="Photo 6 URL (Optional)">
+                </div>
+              </div>
+              <div class="input-group">
+                <label>Short Bio</label>
+                <textarea id="ob-bio" rows="2" placeholder="Tell us something fun about yourself..."></textarea>
+              </div>
+              
+              <div class="prompts-divider">Hinge Prompts (Choose 2)</div>
+              
+              <div class="prompt-box">
+                <label class="prompt-label">Prompt 1: My ideal blind date is...</label>
+                <textarea class="ob-prompt-ans" data-q="My ideal blind date is..." placeholder="Type your answer here..."></textarea>
+              </div>
+
+              <div class="prompt-box">
+                <label class="prompt-label">Prompt 2: Most spontaneous thing I've done...</label>
+                <textarea class="ob-prompt-ans" data-q="Most spontaneous thing I've done..." placeholder="Type your answer here..."></textarea>
+              </div>
+
+              <div class="prompt-box">
+                <label class="prompt-label">Prompt 3: A social cause I care about...</label>
+                <textarea class="ob-prompt-ans" data-q="A social cause I care about..." placeholder="Type your answer here..."></textarea>
+              </div>
+
+              <div class="button-row">
+                <button type="button" id="btn-prev-step" class="btn btn-secondary">Back</button>
+                <button type="submit" class="btn btn-accent">Complete Profile</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- PAGE: DASHBOARD (NO DATE MATCHED) -->
+      <div id="page-dashboard" class="page">
+        <div class="dashboard-header">
+          <div class="logo-text"><i class="fa-solid fa-fire text-accent"></i> campfire</div>
+          <button class="btn-settings-icon" id="btn-to-settings"><i class="fa-solid fa-sliders"></i></button>
+        </div>
+        <div class="dashboard-body">
+          <div class="queue-card">
+            <div class="campfire-animation">
+              <div class="fire-base">
+                <div class="log"></div>
+                <div class="log"></div>
+              </div>
+              <div class="flames">
+                <div class="flame"></div>
+                <div class="flame"></div>
+                <div class="flame"></div>
+                <div class="flame"></div>
+              </div>
+              <div class="particles">
+                <span class="particle"></span>
+                <span class="particle"></span>
+                <span class="particle"></span>
+              </div>
+            </div>
+            
+            <h2 id="queue-title">Ready for a Blind Date?</h2>
+            <p id="queue-desc" class="sub-text">Join the queue to match randomly with a student from an inter-college campus. You will chat anonymously first!</p>
+            
+            <button id="btn-join-queue" class="btn btn-accent btn-glow">Join Blind Date Queue</button>
+            <button id="btn-leave-queue" class="btn btn-secondary hidden">Cancel Queue Search</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- PAGE: ACTIVE DATE (BLIND / REVEALED PROFILE VIEW) -->
+      <div id="page-active-date" class="page">
+        <div class="active-date-header">
+          <button id="btn-active-to-dashboard" class="btn-back"><i class="fa-solid fa-arrow-left"></i></button>
+          <div class="header-center">
+            <span class="title-label">Your Blind Date</span>
+            <h4 id="active-partner-codename">Velvet Fox</h4>
+          </div>
+          <button id="btn-to-chat" class="btn-chat-link"><i class="fa-solid fa-comments"></i> <span class="chat-badge hidden">●</span></button>
+        </div>
+
+        <div class="active-date-scroll">
+          <!-- Main Profile Photo (Blurred or Clear) -->
+          <div class="profile-photo-container">
+            <img id="active-partner-img" src="/assets/user_placeholder.webp" alt="Partner Image" class="blurred">
+            <div class="blur-overlay" id="blur-overlay">
+              <i class="fa-solid fa-lock"></i>
+              <p>Chat with them to reveal photos & real names!</p>
+            </div>
+            <div class="college-tag" id="active-partner-college">UC Berkeley</div>
+          </div>
+
+          <!-- Basic details -->
+          <div class="profile-section">
+            <div class="profile-meta-row">
+              <span class="profile-age" id="active-partner-age">20</span>
+              <span class="profile-gender" id="active-partner-gender">Female</span>
+              <span class="profile-major" id="active-partner-course">Computer Science</span>
+            </div>
+            <p class="profile-bio" id="active-partner-bio">Always down for late-night boba runs...</p>
+          </div>
+
+          <!-- Photo Grid Section -->
+          <div class="profile-section">
+            <div class="section-title">Profile Gallery</div>
+            <div class="profile-photos-grid" id="active-partner-photos-grid">
+              <!-- Dynamically populated photo thumbnails -->
+            </div>
+          </div>
+
+          <!-- Prompts Section (Hinge style cards) -->
+          <div id="active-prompts-container">
+            <!-- Prompt Cards will be rendered dynamically -->
+          </div>
+
+          <!-- Quick Action Buttons -->
+          <div class="action-footer">
+            <button id="btn-chat-now" class="btn btn-accent btn-block"><i class="fa-solid fa-message"></i> Open Anonymous Chat</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- PAGE: CHAT ROOM -->
+      <div id="page-chat" class="page">
+        <div class="chat-header">
+          <button id="btn-chat-to-active" class="btn-back"><i class="fa-solid fa-arrow-left"></i></button>
+          <div class="chat-partner-info">
+            <div class="avatar-sm">
+              <img id="chat-partner-avatar" src="/assets/user_placeholder.webp" class="blurred">
+            </div>
+            <div>
+              <h4 id="chat-partner-name">Velvet Fox</h4>
+              <span class="typing-indicator" id="chat-typing-status">typing...</span>
+            </div>
+          </div>
+          <button id="btn-chat-reveal" class="btn-reveal-action"><i class="fa-solid fa-eye"></i> Reveal</button>
+        </div>
+
+        <!-- Timer / Progress bar overlay -->
+        <div class="reveal-progress-container">
+          <div class="progress-info">
+            <span id="reveal-progress-text">0 / 20 messages to Reveal Profiles</span>
+            <span class="countdown-timer" id="chat-countdown">23:59:59</span>
+          </div>
+          <div class="progress-bar-bg">
+            <div class="progress-bar-fill" id="reveal-progress-bar" style="width: 0%"></div>
+          </div>
+        </div>
+
+        <!-- Message logs -->
+        <div class="chat-messages" id="chat-messages-container">
+          <!-- Messages dynamically generated -->
+        </div>
+
+        <!-- Chat input area -->
+        <div class="chat-input-area">
+          <button id="btn-chat-attach" class="btn-attach"><i class="fa-solid fa-image"></i></button>
+          <input type="text" id="chat-message-input" placeholder="Type a message..." autocomplete="off">
+          <button id="btn-send-message" class="btn-send"><i class="fa-solid fa-paper-plane"></i></button>
+        </div>
+      </div>
+
+      <!-- PAGE: SETTINGS -->
+      <div id="page-settings" class="page">
+        <div class="settings-header">
+          <button id="btn-settings-to-dashboard" class="btn-back"><i class="fa-solid fa-arrow-left"></i></button>
+          <h3>Profile Settings</h3>
+        </div>
+        <div class="settings-body">
+          <div class="settings-user-card">
+            <img id="settings-avatar" src="/assets/user_placeholder.webp" alt="Avatar">
+            <h4 id="settings-name">Your Name</h4>
+            <p id="settings-college">Stanford University</p>
+          </div>
+          
+          <div class="settings-menu">
+            <button class="settings-item" id="btn-view-plans" style="background: rgba(255, 79, 126, 0.08); border-color: rgba(255, 79, 126, 0.2); color: var(--accent-color); margin-bottom: 8px;">
+              <i class="fa-solid fa-crown"></i> View Premium Plans
+            </button>
+            <button class="settings-item" id="btn-simulate-dates" style="background: rgba(133, 92, 248, 0.08); border-color: rgba(133, 92, 248, 0.2); color: #855cf8; margin-bottom: 8px;">
+              <i class="fa-solid fa-fire-burner"></i> Simulate 5 Completed Dates
+            </button>
+            <button class="settings-item" id="btn-reset-demo">
+              <i class="fa-solid fa-arrow-rotate-left"></i> Reset Demo / Logout
+            </button>
+            <div class="developer-note">
+              <h5>System Information</h5>
+              <p>Campfire Blind Date Matchmaking Core is running in Simulation Mode. All messages and swipe logic are fully integrated through active Socket.IO connections.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MODAL: SUBSCRIPTION PAYWALL -->
+      <div id="subscription-modal" class="modal hidden">
+        <div class="modal-content">
+          <div class="paywall-crown"><i class="fa-solid fa-crown text-accent"></i></div>
+          <h3>Campfire Premium</h3>
+          <p class="paywall-subtitle">You've completed your 5 free blind dates! Subscribe to unlock unlimited matchmaking nearby.</p>
+          
+          <div class="plan-options">
+            <div class="plan-card active" data-plan="monthly">
+              <span class="plan-title">Monthly Membership</span>
+              <span class="plan-price">₹99/month</span>
+            </div>
+            <div class="plan-card" data-plan="yearly">
+              <span class="plan-title">Yearly Membership</span>
+              <span class="plan-price">₹999/year</span>
+              <span class="plan-tag">SAVE 16%</span>
+            </div>
+          </div>
+
+          <button id="btn-subscribe-pay" class="btn btn-accent btn-block">Unlock Unlimited Dates</button>
+          <button id="btn-subscribe-close" class="btn btn-secondary btn-block">Go Back</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Socket.IO library served by Express -->
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
