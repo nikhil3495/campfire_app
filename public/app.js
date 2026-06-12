@@ -786,6 +786,9 @@ function logout() {
   
   navigateTo("page-login");
   
+  // Hide subscription modal if open
+  document.getElementById("subscription-modal").classList.add("hidden");
+  
   // Reset fields
   document.getElementById("phone-input").value = "";
   document.getElementById("otp-input").value = "";
