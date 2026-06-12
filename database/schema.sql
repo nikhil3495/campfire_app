@@ -13,6 +13,7 @@ CREATE TABLE IF NOT EXISTS users (
     email_verified BOOLEAN DEFAULT FALSE,
     is_premium BOOLEAN DEFAULT FALSE,
     subscription_type VARCHAR(20) DEFAULT 'free',
+    trial_ends_at TIMESTAMP,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -83,6 +84,7 @@ CREATE TABLE IF NOT EXISTS messages (
 -- ==========================================
 ALTER TABLE users ADD COLUMN IF NOT EXISTS is_premium BOOLEAN DEFAULT FALSE;
 ALTER TABLE users ADD COLUMN IF NOT EXISTS subscription_type VARCHAR(20) DEFAULT 'free';
+ALTER TABLE users ADD COLUMN IF NOT EXISTS trial_ends_at TIMESTAMP;
 ALTER TABLE profiles ADD COLUMN IF NOT EXISTS image_urls VARCHAR(255)[];
 ALTER TABLE messages ADD COLUMN IF NOT EXISTS msg_type VARCHAR(10) DEFAULT 'text';
 

@@ -427,6 +427,13 @@ function setupEventListeners() {
     plan.addEventListener("click", () => {
       plans.forEach(p => p.classList.remove("active"));
       plan.classList.add("active");
+      
+      const payButton = document.getElementById("btn-subscribe-pay");
+      if (plan.dataset.plan === "trial") {
+        payButton.textContent = "Start 7-Day Free Trial";
+      } else {
+        payButton.textContent = "Unlock Unlimited Dates";
+      }
     });
   });
 
@@ -439,23 +446,35 @@ function setupEventListeners() {
   // Subscribe Payment Trigger
   document.getElementById("btn-subscribe-pay").addEventListener("click", async () => {
     const activeCard = document.querySelector(".plan-card.active");
-    const activePlan = activeCard ? activeCard.dataset.plan : "monthly";
+    const activePlan = activeCard ? activeCard.dataset.plan : "trial";
     try {
-      const res = await fetch(`${API_BASE}/api/subscription/activate`, {
+      let endpoint = `${API_BASE}/api/subscription/activate`;
+      let body = { type: activePlan };
+      
+      if (activePlan === "trial") {
+        endpoint = `${API_BASE}/api/subscription/free-trial`;
+        body = {};
+      }
+
+      const res = await fetch(endpoint, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           "Authorization": `Bearer_${state.userId}`
         },
-        body: JSON.stringify({ type: activePlan })
+        body: JSON.stringify(body)
       });
       if (res.ok) {
-        alert("Payment Successful! Premium subscription activated.");
+        if (activePlan === "trial") {
+          alert("Free Trial Started! You have unlocked 7 days of premium access without initial payment.");
+        } else {
+          alert("Payment Successful! Premium subscription activated.");
+        }
         document.getElementById("subscription-modal").classList.add("hidden");
         await checkProfileStatus();
         document.getElementById("btn-join-queue").click();
       } else {
-        alert("Failed to process payment. Try again.");
+        alert("Failed to process request. Try again.");
       }
     } catch (err) {
       console.error(err);

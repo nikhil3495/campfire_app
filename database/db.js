@@ -154,6 +154,7 @@ const createUser = async (phone) => {
     email_verified: false,
     isPremium: false,
     subscriptionType: 'free',
+    trialEndsAt: null,
     onboarded: false,
     profile: null
   };
@@ -177,6 +178,7 @@ const getUser = async (id) => {
       email_verified: user.email_verified,
       isPremium: user.is_premium || false,
       subscriptionType: user.subscription_type || 'free',
+      trialEndsAt: user.trial_ends_at || null,
       onboarded: profile ? profile.is_onboarded : false,
       profile: profile ? {
         name: profile.name,
@@ -606,6 +608,26 @@ const simulateCompletedDates = async (userId) => {
   }
 };
 
+const activateFreeTrial = async (userId) => {
+  const uId = parseInt(userId);
+  const trialEndsAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000); // 7 days from now
+  if (pool) {
+    await pool.query(
+      `UPDATE users 
+       SET is_premium = TRUE, subscription_type = 'trial', trial_ends_at = $1 
+       WHERE id = $2`,
+      [trialEndsAt, uId]
+    );
+    return await getUser(uId);
+  }
+  if (inMemoryUsers[uId]) {
+    inMemoryUsers[uId].isPremium = true;
+    inMemoryUsers[uId].subscriptionType = 'trial';
+    inMemoryUsers[uId].trialEndsAt = trialEndsAt;
+  }
+  return inMemoryUsers[uId] || null;
+};
+
 module.exports = {
   getCollegeName,
   getColleges,
@@ -623,5 +645,6 @@ module.exports = {
   saveMessage,
   getBlindDateCount,
   activateSubscription,
-  simulateCompletedDates
+  simulateCompletedDates,
+  activateFreeTrial
 };

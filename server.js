@@ -136,7 +136,10 @@ app.post('/api/blind-date/join', async (req, res) => {
 
     // Check if free user exceeded 5 dates limit
     const dateCount = await db.getBlindDateCount(userId);
-    if (dateCount >= 5 && !user.isPremium) {
+    const isTrialExpired = user.subscriptionType === 'trial' && user.trialEndsAt && new Date() > new Date(user.trialEndsAt);
+    const hasAccess = user.isPremium && !isTrialExpired;
+
+    if (dateCount >= 5 && !hasAccess) {
       return res.json({ status: "subscription_required" });
     }
 
@@ -269,6 +272,20 @@ app.post('/api/subscription/activate', async (req, res) => {
     res.json({ success: true, user: updatedUser });
   } catch (err) {
     console.error('Error activating subscription:', err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// Activate 7-day free trial
+app.post('/api/subscription/free-trial', async (req, res) => {
+  try {
+    const userId = parseInt(req.headers.authorization?.split('_')[1]);
+    if (!userId) return res.status(401).json({ error: "Unauthorized" });
+
+    const updatedUser = await db.activateFreeTrial(userId);
+    res.json({ success: true, user: updatedUser });
+  } catch (err) {
+    console.error('Error activating free trial:', err);
     res.status(500).json({ error: 'Internal server error' });
   }
 });
