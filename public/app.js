@@ -474,7 +474,12 @@ function setupEventListeners() {
         await checkProfileStatus();
         document.getElementById("btn-join-queue").click();
       } else {
-        alert("Failed to process request. Try again.");
+        if (res.status === 401) {
+          alert("Your session has expired. Redirecting to login...");
+          logout();
+        } else {
+          alert("Failed to process request. Try again.");
+        }
       }
     } catch (err) {
       console.error(err);
@@ -528,6 +533,12 @@ async function joinQueue() {
         state.queueInterval = null;
         resetQueueUI();
         await checkActiveDate();
+      }
+    } else {
+      if (res.status === 401) {
+        clearInterval(state.queueInterval);
+        state.queueInterval = null;
+        logout();
       }
     }
   } catch (err) {
